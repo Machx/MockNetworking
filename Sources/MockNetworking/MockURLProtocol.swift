@@ -16,6 +16,8 @@ import Foundation
 
 public final class MockURLProtocol: URLProtocol {
 	
+	public static let shared = MockURLProtocol()
+	
 	//MARK: - Required URLProtocol API's
 	
 	private static var responses = [URL: HTTPURLResponse]()
@@ -38,7 +40,7 @@ public final class MockURLProtocol: URLProtocol {
 	
 	//MARK: - Registration API's
 	
-	static var isRegistered = false
+	private static var isRegistered = false
 	
 	public static func regigster(response: HTTPURLResponse, for url: URL) {
 		if !isRegistered {
@@ -47,7 +49,9 @@ public final class MockURLProtocol: URLProtocol {
 		responses[url] = response
 	}
 	
-	
+	private static func response(for url : URL) -> HTTPURLResponse? {
+		return responses.removeValue(forKey: url)
+	}
 	
 	public static func unregister() {
 		URLProtocol.unregisterClass(MockURLProtocol.self)

@@ -27,12 +27,29 @@ final class MockNetworkingTests: XCTestCase {
 									   statusCode: 200,
 									   httpVersion: HTTPURLResponse.HTTP_1_1,
 									   headerFields: nil)!
-		MockURLProtocol.regigster(response: response, for: url)
-//		defer {
-//			MockURLProtocol.unregister()
-//		}
 		
-		//
+		MockURLProtocol.register(response: response, for: url)
+		defer {
+			MockURLProtocol.unregister()
+		}
+		
+		var receivedURL: URL?
+		var receivedResponse: URLResponse?
+		var receivedError: Error?
+		
+		let expectation = XCTestExpectation()
+		URLSession.sessionWith(.ephemeral, delegate: nil).downloadTask(with: url) { (url, response, error) in
+			receivedURL = response?.url
+			receivedResponse = response
+			receivedError = error
+			expectation.fulfill()
+		}.resume()
+		
+		wait(for: [expectation], timeout: 5.0)
+		
+		XCTAssertEqual(url, receivedURL)
+		XCTAssertNotNil(receivedResponse)
+		XCTAssertNil(receivedError)
     }
 
     static var allTests = [

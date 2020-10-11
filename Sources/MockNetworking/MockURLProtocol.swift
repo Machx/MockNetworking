@@ -14,6 +14,27 @@
 
 import Foundation
 
+private final class MockPropertyResponse {
+	typealias HTTPStatusCode = UInt32
+	
+	var statusCode: HTTPStatusCode
+	var httpVersion: String = HTTPURLResponse.HTTP_1_1
+	var headerFields = [String: String]()
+	var bodyData: Data?
+	var error: Error?
+	
+	init(status: HTTPStatusCode = 200,
+		 httpVersion version: String = HTTPURLResponse.HTTP_1_1,
+		 headerFields headers: [String: String],
+		 body: Data?,
+		 error requestError: Error?) {
+		statusCode = status
+		httpVersion = version
+		headerFields =  headers
+		bodyData = body
+		error = requestError
+	}
+}
 public final class MockURLProtocol: URLProtocol {
 	
 	public static let shared = MockURLProtocol()

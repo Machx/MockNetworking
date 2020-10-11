@@ -14,8 +14,8 @@
 
 import Foundation
 
-private final class MockPropertyResponse {
-	typealias HTTPStatusCode = UInt32
+public final class MockPropertyResponse {
+	typealias HTTPStatusCode = Int // Because Apple uses Int
 	
 	var statusCode: HTTPStatusCode
 	var httpVersion: String = HTTPURLResponse.HTTP_1_1
@@ -52,6 +52,10 @@ fileprivate final class URLPropertyStore {
 		set {
 			storedResponses[url] = newValue
 		}
+	}
+	
+	func contains(url: URL) -> Bool {
+		return storedResponses.keys.contains(url)
 	}
 }
 

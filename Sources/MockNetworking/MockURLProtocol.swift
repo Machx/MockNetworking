@@ -77,9 +77,26 @@ public final class MockURLProtocol: URLProtocol {
 	
 	public override func startLoading() {
 		guard let url = request.url else { return }
-		guard let response = MockURLProtocol.response(for: url) else { return }
+		guard let response = URLPropertyStore.shared[url] else { return }
 		
-		client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
+		guard let httpResponse = HTTPURLResponse(url: url,
+												 statusCode: response.statusCode,
+												 httpVersion: response.httpVersion,
+												 headerFields: response.headerFields) else {
+			return
+		}
+		
+		client?.urlProtocol(self, didReceive: httpResponse, cacheStoragePolicy: .notAllowed)
+		
+		if let data = response.bodyData {
+			client?.urlProtocol(self, didLoad: data)
+		}
+		
+		if let error = response.error {
+			client?.urlProtocol(self, didFailWithError: error)
+		} else {
+			client?.urlProtocolDidFinishLoading(self)
+		}
 	}
 	
 	public override func stopLoading() {
@@ -90,11 +107,11 @@ public final class MockURLProtocol: URLProtocol {
 	
 	private static var isRegistered = false
 	
-	public static func regigster(response: HTTPURLResponse, for url: URL) {
+	public static func regigster(response: MockPropertyResponse, for url: URL) {
 		if !isRegistered {
 			URLProtocol.registerClass(MockURLProtocol.self)
 		}
-		responses[url] = response
+		URLPropertyStore.shared[url] = response
 	}
 	
 	public static func unregister() {

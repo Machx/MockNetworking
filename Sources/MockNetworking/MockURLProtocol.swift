@@ -72,16 +72,14 @@ public final class MockURLProtocol: URLProtocol {
 	
 	//MARK: - Required URLProtocol API's
 	
-	private static var responses = [URL: HTTPURLResponse]()
-	
 	public override class func canInit(with request: URLRequest) -> Bool {
 		guard let url = request.url else { return false }
-		return responses.keys.contains(url)
+		return URLPropertyStore.shared.contains(url: url)
 	}
 	
 	public override class func canInit(with task: URLSessionTask) -> Bool {
 		guard let url = task.currentRequest?.url else { return false }
-		return responses.keys.contains(url)
+		return URLPropertyStore.shared.contains(url: url)
 	}
 	
 	public override func startLoading() {

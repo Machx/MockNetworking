@@ -61,6 +61,11 @@ fileprivate final class URLPropertyStore {
 
 public final class MockURLProtocol: URLProtocol {
 	
+	public enum MockNetworkingErrors: Error {
+		case unableToRetrieveURLRequest
+		case unableToRetrieveMockResponse
+	}
+	
 	public static let shared = MockURLProtocol()
 	
 	//MARK: - Required URLProtocol API's
@@ -75,9 +80,19 @@ public final class MockURLProtocol: URLProtocol {
 		return URLPropertyStore.shared.contains(url: url)
 	}
 	
+	override public class func canonicalRequest(for request: URLRequest) -> URLRequest {
+		return request
+	}
+	
 	public override func startLoading() {
-		guard let url = request.url else { return }
-		guard let response = URLPropertyStore.shared[url] else { return }
+		guard let url = request.url else {
+			client?.urlProtocol(self, didFailWithError: MockNetworkingErrors.unableToRetrieveURLRequest)
+			return
+		}
+		guard let response = URLPropertyStore.shared[url] else {
+			client?.urlProtocol(self, didFailWithError: MockNetworkingErrors.unableToRetrieveMockResponse)
+			return
+		}
 		
 		guard let httpResponse = HTTPURLResponse(url: url,
 												 statusCode: response.statusCode,
@@ -105,18 +120,32 @@ public final class MockURLProtocol: URLProtocol {
 	
 	//MARK: - Registration API's
 	
-	private static var isRegistered = false
+	private static var _isRegistered = false
 	
-	public static func regigster(response: MockPropertyResponse, for url: URL) {
-		if !isRegistered {
+	public static func regigsterMock(response: MockPropertyResponse, for url: URL) {
+		if !_isRegistered {
 			URLProtocol.registerClass(MockURLProtocol.self)
+			_isRegistered = true
 		}
 		URLPropertyStore.shared[url] = response
 	}
 	
+	public static func register(response: HTTPURLResponse, for url: URL) {
+		if !_isRegistered {
+			URLProtocol.registerClass(MockURLProtocol.self)
+			_isRegistered = true
+		}
+		let httpResponse = MockPropertyResponse(status: response.statusCode,
+												httpVersion: HTTPURLResponse.HTTP_1_1,
+												headerFields: [:],
+												body: nil,
+												error: nil)
+		URLPropertyStore.shared[url] = httpResponse
+	}
+	
 	public static func unregister() {
-		guard isRegistered else { return }
+		guard _isRegistered else { return }
 		URLProtocol.unregisterClass(MockURLProtocol.self)
-		isRegistered = false
+		_isRegistered = false
 	}
 }

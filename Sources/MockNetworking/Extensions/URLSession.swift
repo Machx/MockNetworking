@@ -8,8 +8,8 @@
 import Foundation
 
 public extension URLSession {
-	class func sessionWith(_ configuration: URLSessionConfiguration, delegate: URLSessionDownloadDelegate? = nil) {
-		let configuration = URLSessionConfiguration.ephemeral
+	class func sessionWith(_ configuration: URLSessionConfiguration?, delegate: URLSessionDownloadDelegate? = nil) -> URLSession {
+		let configuration = configuration ?? URLSessionConfiguration.ephemeral
 		configuration.protocolClasses = [MockURLProtocol.self]
 		let session = URLSession(configuration: configuration,
 								 delegate: delegate,

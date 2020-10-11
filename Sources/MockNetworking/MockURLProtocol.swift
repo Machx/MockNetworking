@@ -63,13 +63,6 @@ public final class MockURLProtocol: URLProtocol {
 	
 	public static let shared = MockURLProtocol()
 	
-	private enum MockURLRequestKeys: String {
-		case data = "Data"
-		case error = "Error"
-		case status = "StatusCode"
-		case headers = "HeaderFields"
-	}
-	
 	//MARK: - Required URLProtocol API's
 	
 	public override class func canInit(with request: URLRequest) -> Bool {

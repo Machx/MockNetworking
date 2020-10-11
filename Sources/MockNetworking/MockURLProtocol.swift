@@ -35,6 +35,26 @@ private final class MockPropertyResponse {
 		error = requestError
 	}
 }
+
+fileprivate final class URLPropertyStore {
+	fileprivate static let shared = URLPropertyStore()
+	
+	private var storedResponses = [URL: MockPropertyResponse]()
+	
+	init() {
+	}
+	
+	subscript(url: URL) -> MockPropertyResponse? {
+		get {
+			return storedResponses[url]
+		}
+		
+		set {
+			storedResponses[url] = newValue
+		}
+	}
+}
+
 public final class MockURLProtocol: URLProtocol {
 	
 	public static let shared = MockURLProtocol()

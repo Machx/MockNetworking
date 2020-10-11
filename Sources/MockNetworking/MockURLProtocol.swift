@@ -59,6 +59,13 @@ public final class MockURLProtocol: URLProtocol {
 	
 	public static let shared = MockURLProtocol()
 	
+	private enum MockURLRequestKeys: String {
+		case data = "Data"
+		case error = "Error"
+		case status = "StatusCode"
+		case headers = "HeaderFields"
+	}
+	
 	//MARK: - Required URLProtocol API's
 	
 	private static var responses = [URL: HTTPURLResponse]()
@@ -78,8 +85,6 @@ public final class MockURLProtocol: URLProtocol {
 		guard let response = MockURLProtocol.response(for: url) else { return }
 		
 		client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
-		
-		
 	}
 	
 	public override func stopLoading() {
@@ -95,10 +100,6 @@ public final class MockURLProtocol: URLProtocol {
 			URLProtocol.registerClass(MockURLProtocol.self)
 		}
 		responses[url] = response
-	}
-	
-	private static func response(for url : URL) -> HTTPURLResponse? {
-		return responses.removeValue(forKey: url)
 	}
 	
 	public static func unregister() {

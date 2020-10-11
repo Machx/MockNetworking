@@ -23,15 +23,22 @@ public final class MockURLProtocol: URLProtocol {
 	private static var responses = [URL: HTTPURLResponse]()
 	
 	public override class func canInit(with request: URLRequest) -> Bool {
-		return true
+		guard let url = request.url else { return false }
+		return responses.keys.contains(url)
 	}
 	
 	public override class func canInit(with task: URLSessionTask) -> Bool {
-		return true
+		guard let url = task.currentRequest?.url else { return false }
+		return responses.keys.contains(url)
 	}
 	
 	public override func startLoading() {
-		//
+		guard let url = request.url else { return }
+		guard let response = MockURLProtocol.response(for: url) else { return }
+		
+		client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
+		
+		
 	}
 	
 	public override func stopLoading() {
@@ -54,6 +61,8 @@ public final class MockURLProtocol: URLProtocol {
 	}
 	
 	public static func unregister() {
+		guard isRegistered else { return }
 		URLProtocol.unregisterClass(MockURLProtocol.self)
+		isRegistered = false
 	}
 }

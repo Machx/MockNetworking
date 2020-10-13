@@ -68,6 +68,7 @@ public final class MockURLProtocol: URLProtocol {
 	public enum MockNetworkingErrors: Error {
 		case unableToRetrieveURLRequest
 		case unableToRetrieveMockResponse
+		case cannotConstructResponse
 	}
 	
 	public static let shared = MockURLProtocol()
@@ -93,25 +94,28 @@ public final class MockURLProtocol: URLProtocol {
 			client?.urlProtocol(self, didFailWithError: MockNetworkingErrors.unableToRetrieveURLRequest)
 			return
 		}
-		guard let response = URLPropertyStore.shared[url] else {
+		guard let mockResponse = URLPropertyStore.shared[url] else {
 			client?.urlProtocol(self, didFailWithError: MockNetworkingErrors.unableToRetrieveMockResponse)
 			return
 		}
 		
-		guard let httpResponse = HTTPURLResponse(url: url,
-												 statusCode: response.statusCode,
-												 httpVersion: response.httpVersion,
-												 headerFields: response.headerFields) else {
+		guard let httpStatus = mockResponse.response?.statusCode,
+			  let httpHeaderFields = mockResponse.response?.allHeaderFields as? [String: String],
+			  let httpResponse = HTTPURLResponse(url: url,
+													   statusCode: httpStatus,
+													   httpVersion: mockResponse.httpVersion,
+													   headerFields: httpHeaderFields) else {
+			client?.urlProtocol(self, didFailWithError: MockNetworkingErrors.cannotConstructResponse)
 			return
 		}
 		
 		client?.urlProtocol(self, didReceive: httpResponse, cacheStoragePolicy: .notAllowed)
 		
-		if let data = response.bodyData {
+		if let data = mockResponse.bodyData {
 			client?.urlProtocol(self, didLoad: data)
 		}
 		
-		if let error = response.error {
+		if let error = mockResponse.error {
 			client?.urlProtocol(self, didFailWithError: error)
 		} else {
 			client?.urlProtocolDidFinishLoading(self)

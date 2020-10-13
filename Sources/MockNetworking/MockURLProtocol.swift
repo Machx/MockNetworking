@@ -17,20 +17,24 @@ import Foundation
 public final class MockPropertyResponse {
 	typealias HTTPStatusCode = Int // Because Apple uses Int
 	
-	var statusCode: HTTPStatusCode
-	var httpVersion: String = HTTPURLResponse.HTTP_1_1
-	var headerFields = [String: String]()
-	var bodyData: Data?
+	var response: HTTPURLResponse?
+	var body: Data?
 	var error: Error?
+	var httpVersion: String = HTTPURLResponse.HTTP_1_1
+	var bodyData: Data?
 	
-	init(status: HTTPStatusCode = 200,
+	init(url: URL,
+		 status: HTTPStatusCode = 200,
 		 httpVersion version: String = HTTPURLResponse.HTTP_1_1,
 		 headerFields headers: [String: String],
 		 body: Data?,
 		 error requestError: Error?) {
-		statusCode = status
+		
+		response = HTTPURLResponse(url: url,
+								   statusCode: status,
+								   httpVersion: version,
+								   headerFields: headers)
 		httpVersion = version
-		headerFields =  headers
 		bodyData = body
 		error = requestError
 	}

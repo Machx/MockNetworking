@@ -18,11 +18,11 @@ import MockNetworking
 
 final class MockNetworkingTests: XCTestCase {
 	
-    func testExample() {
+    func testExample() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
-		let url = URL(string: "https://wwww.apple.com")!
+		let url = try XCTUnwrap(URL(string: "https://wwww.apple.com"))
 		let response = HTTPURLResponse(url: url,
 									   statusCode: 200,
 									   httpVersion: HTTPURLResponse.HTTP_1_1,

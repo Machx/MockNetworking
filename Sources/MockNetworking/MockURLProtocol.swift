@@ -143,7 +143,8 @@ public final class MockURLProtocol: URLProtocol {
 			URLProtocol.registerClass(MockURLProtocol.self)
 			_isRegistered = true
 		}
-		let httpResponse = MockPropertyResponse(status: response.statusCode,
+		let httpResponse = MockPropertyResponse(url: url,
+												status: response.statusCode,
 												httpVersion: HTTPURLResponse.HTTP_1_1,
 												headerFields: [:],
 												body: nil,

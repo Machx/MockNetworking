@@ -27,6 +27,7 @@ public final class MockPropertyResponse {
 	var error: Error?
 	var httpVersion: String = HTTPURLResponse.HTTP_1_1
 	var bodyData: Data?
+	var delay: MockResponseDelay?
 	
 	init(url: URL,
 		 status: HTTPStatusCode = 200,
@@ -34,6 +35,7 @@ public final class MockPropertyResponse {
 		 headerFields headers: [String: String],
 		 body: Data?,
 		 error requestError: Error?) {
+		 delay responseDelay: MockResponseDelay? = nil) {
 		
 		response = HTTPURLResponse(url: url,
 								   statusCode: status,
@@ -42,6 +44,7 @@ public final class MockPropertyResponse {
 		httpVersion = version
 		bodyData = body
 		error = requestError
+		delay = responseDelay
 	}
 }
 

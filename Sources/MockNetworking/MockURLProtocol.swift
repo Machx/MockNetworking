@@ -102,9 +102,9 @@ public final class MockURLProtocol: URLProtocol {
 		guard let httpStatus = mockResponse.response?.statusCode,
 			  let httpHeaderFields = mockResponse.response?.allHeaderFields as? [String: String],
 			  let httpResponse = HTTPURLResponse(url: url,
-													   statusCode: httpStatus,
-													   httpVersion: mockResponse.httpVersion,
-													   headerFields: httpHeaderFields) else {
+												 statusCode: httpStatus,
+												 httpVersion: mockResponse.httpVersion,
+												 headerFields: httpHeaderFields) else {
 			client?.urlProtocol(self, didFailWithError: MockNetworkingErrors.cannotConstructResponse)
 			return
 		}

@@ -14,6 +14,11 @@
 
 import Foundation
 
+public enum MockResponseDelay {
+	case time(TimeInterval)
+	case range(ClosedRange<TimeInterval>)
+}
+
 public final class MockPropertyResponse {
 	typealias HTTPStatusCode = Int // Because Apple uses Int
 	

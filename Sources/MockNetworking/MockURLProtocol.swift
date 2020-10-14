@@ -33,8 +33,8 @@ public final class MockPropertyResponse {
 		 status: HTTPStatusCode = 200,
 		 httpVersion version: String = HTTPURLResponse.HTTP_1_1,
 		 headerFields headers: [String: String],
-		 body: Data?,
-		 error requestError: Error?) {
+		 body: Data? = nil,
+		 error requestError: Error? = nil,
 		 delay responseDelay: MockResponseDelay? = nil) {
 		
 		response = HTTPURLResponse(url: url,

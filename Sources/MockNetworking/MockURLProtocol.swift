@@ -146,7 +146,9 @@ public final class MockURLProtocol: URLProtocol {
 		URLPropertyStore.shared[url] = response
 	}
 	
-	public static func register(response: HTTPURLResponse, for url: URL) {
+	public static func register(response: HTTPURLResponse,
+								for url: URL,
+								withDelay delay: MockResponseDelay? = nil) {
 		if !_isRegistered {
 			URLProtocol.registerClass(MockURLProtocol.self)
 			_isRegistered = true
@@ -156,7 +158,8 @@ public final class MockURLProtocol: URLProtocol {
 												httpVersion: HTTPURLResponse.HTTP_1_1,
 												headerFields: [:],
 												body: nil,
-												error: nil)
+												error: nil,
+												delay: delay)
 		URLPropertyStore.shared[url] = httpResponse
 	}
 	

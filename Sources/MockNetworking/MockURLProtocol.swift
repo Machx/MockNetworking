@@ -117,6 +117,16 @@ public final class MockURLProtocol: URLProtocol {
 			return
 		}
 		
+		if let delay = mockResponse.delay {
+			switch delay {
+			case .time(let time):
+				Thread.sleep(forTimeInterval: time)
+			case .range(let range):
+				let randomTimeInRange = Double.random(in: range)
+				Thread.sleep(forTimeInterval: randomTimeInRange)
+			}
+		}
+		
 		client?.urlProtocol(self, didReceive: httpResponse, cacheStoragePolicy: .notAllowed)
 		
 		if let data = mockResponse.bodyData {

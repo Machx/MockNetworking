@@ -18,7 +18,7 @@ import MockNetworking
 
 final class MockNetworkingTests: XCTestCase {
 	
-    func testExample() throws {
+    func testBasicMockResponse() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
@@ -111,6 +111,8 @@ final class MockNetworkingTests: XCTestCase {
 	}
 
     static var allTests = [
-        ("testExample", testExample),
+        ("testBasicMockResponse", testBasicMockResponse),
+		("testDelay", testDelay),
+		("testDelayRange", testDelayRange),
     ]
 }

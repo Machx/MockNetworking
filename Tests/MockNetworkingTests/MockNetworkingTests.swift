@@ -80,6 +80,35 @@ final class MockNetworkingTests: XCTestCase {
 		let result = end - start
 		XCTAssertGreaterThan(result, 1.0)
 	}
+	
+	func testDelayRange() throws {
+		// This is an example of a functional test case.
+		// Use XCTAssert and related functions to verify your tests produce the correct
+		// results.
+		let url = try XCTUnwrap(URL(string: "https://wwww.apple.com"))
+		let response = try XCTUnwrap(HTTPURLResponse(url: url,
+													 statusCode: 200,
+													 httpVersion: HTTPURLResponse.HTTP_1_1,
+													 headerFields: nil))
+		
+		MockURLProtocol.register(response: response, for: url, withDelay: .range(1...2))
+		defer {
+			MockURLProtocol.unregister()
+		}
+		
+		let expectation = XCTestExpectation()
+		let start = CFAbsoluteTimeGetCurrent()
+		var end: Double = 0
+		URLSession.sessionWith(.ephemeral, delegate: nil).downloadTask(with: url) { (_, _, _) in
+			expectation.fulfill()
+			end = CFAbsoluteTimeGetCurrent()
+		}.resume()
+		
+		wait(for: [expectation], timeout: 5.0)
+		
+		let result = end - start
+		XCTAssertGreaterThan(result, 1.0)
+	}
 
     static var allTests = [
         ("testExample", testExample),

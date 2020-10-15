@@ -13,15 +13,11 @@
 /// limitations under the License.
 
 import XCTest
-//@testable import MockNetworking
 import MockNetworking
 
 final class MockNetworkingTests: XCTestCase {
 	
     func testBasicMockResponse() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
 		let url = try XCTUnwrap(URL(string: "https://wwww.apple.com"))
 		let response = HTTPURLResponse(url: url,
 									   statusCode: 200,
@@ -53,9 +49,6 @@ final class MockNetworkingTests: XCTestCase {
     }
 	
 	func testDelay() throws {
-		// This is an example of a functional test case.
-		// Use XCTAssert and related functions to verify your tests produce the correct
-		// results.
 		let url = try XCTUnwrap(URL(string: "https://wwww.apple.com"))
 		let response = try XCTUnwrap(HTTPURLResponse(url: url,
 													 statusCode: 200,
@@ -82,9 +75,6 @@ final class MockNetworkingTests: XCTestCase {
 	}
 	
 	func testDelayRange() throws {
-		// This is an example of a functional test case.
-		// Use XCTAssert and related functions to verify your tests produce the correct
-		// results.
 		let url = try XCTUnwrap(URL(string: "https://wwww.apple.com"))
 		let response = try XCTUnwrap(HTTPURLResponse(url: url,
 													 statusCode: 200,

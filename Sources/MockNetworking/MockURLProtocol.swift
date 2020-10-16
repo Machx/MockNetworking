@@ -51,23 +51,27 @@ public final class MockPropertyResponse {
 fileprivate final class URLPropertyStore {
 	fileprivate static let shared = URLPropertyStore()
 	
-	private var storedResponses = [URL: MockPropertyResponse]()
+	private var _storedResponses = [URL: MockPropertyResponse]()
 	
 	init() {
 	}
 	
 	subscript(url: URL) -> MockPropertyResponse? {
 		get {
-			return storedResponses[url]
+			return _storedResponses[url]
 		}
 		
 		set {
-			storedResponses[url] = newValue
+			_storedResponses[url] = newValue
 		}
 	}
 	
 	func contains(url: URL) -> Bool {
-		return storedResponses.keys.contains(url)
+		return _storedResponses.keys.contains(url)
+	}
+	
+	func removeAllReponses() {
+		_storedResponses.removeAll()
 	}
 }
 

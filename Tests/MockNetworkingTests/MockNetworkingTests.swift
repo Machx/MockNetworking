@@ -19,10 +19,10 @@ final class MockNetworkingTests: XCTestCase {
 	
     func testBasicMockResponse() throws {
 		let url = try XCTUnwrap(URL(string: "https://wwww.apple.com"))
-		let response = HTTPURLResponse(url: url,
+		let response = try XCTUnwrap(HTTPURLResponse(url: url,
 									   statusCode: 200,
 									   httpVersion: HTTPURLResponse.HTTP_1_1,
-									   headerFields: nil)!
+									   headerFields: nil))
 		
 		MockURLProtocol.register(response: response, for: url)
 		defer {

@@ -163,14 +163,14 @@ public final class MockURLProtocol: URLProtocol {
 			URLProtocol.registerClass(MockURLProtocol.self)
 			_isRegistered = true
 		}
-		let httpResponse = MockPropertyResponse(url: url,
+		let mockResponse = MockPropertyResponse(url: url,
 												status: response.statusCode,
 												httpVersion: HTTPURLResponse.HTTP_1_1,
 												headerFields: [:],
 												body: nil,
 												error: nil,
 												delay: delay)
-		URLPropertyStore.shared[url] = httpResponse
+		URLPropertyStore.shared[url] = mockResponse
 	}
 	
 	public static func unregister() {

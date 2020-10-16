@@ -182,4 +182,10 @@ public final class MockURLProtocol: URLProtocol {
 		URLProtocol.unregisterClass(MockURLProtocol.self)
 		_isRegistered = false
 	}
+	
+	//MARK: - Other API's
+	
+	public static func clearAllResponses() {
+		URLPropertyStore.shared.removeAllReponses()
+	}
 }

@@ -73,6 +73,10 @@ fileprivate final class URLPropertyStore {
 	func removeAllReponses() {
 		_storedResponses.removeAll()
 	}
+	
+	func removeResponse(for url: URL) -> Bool {
+		return _storedResponses.removeValue(forKey: url) != nil
+	}
 }
 
 public final class MockURLProtocol: URLProtocol {
@@ -187,5 +191,10 @@ public final class MockURLProtocol: URLProtocol {
 	
 	public static func clearAllResponses() {
 		URLPropertyStore.shared.removeAllReponses()
+	}
+	
+	@discardableResult
+	public static func clearResponse(for url: URL) -> Bool {
+		return URLPropertyStore.shared.removeResponse(for: url)
 	}
 }

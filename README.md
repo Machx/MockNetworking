@@ -13,9 +13,9 @@ To setup a mock response you simply need to register the response and then unreg
 ```swift
 let url = try XCTUnwrap(URL(string: "https://wwww.apple.com"))
 let response = try XCTUnwrap(HTTPURLResponse(url: url,
-											statusCode: 200,
-											httpVersion: HTTPURLResponse.HTTP_1_1,
-											headerFields: nil))
+							statusCode: 200,
+							httpVersion: HTTPURLResponse.HTTP_1_1,
+							headerFields: nil))
 
 MockURLProtocol.register(response: response, for: url)
 defer {

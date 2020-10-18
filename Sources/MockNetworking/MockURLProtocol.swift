@@ -48,8 +48,8 @@ public final class MockPropertyResponse {
 	}
 }
 
-fileprivate final class URLPropertyStore {
-	fileprivate static let shared = URLPropertyStore()
+fileprivate final class MockResponseStore {
+	fileprivate static let shared = MockResponseStore()
 	
 	private var _storedResponses = [URL: MockPropertyResponse]()
 	
@@ -93,12 +93,12 @@ public final class MockURLProtocol: URLProtocol {
 	
 	public override class func canInit(with request: URLRequest) -> Bool {
 		guard let url = request.url else { return false }
-		return URLPropertyStore.shared.contains(url: url)
+		return MockResponseStore.shared.contains(url: url)
 	}
 	
 	public override class func canInit(with task: URLSessionTask) -> Bool {
 		guard let url = task.currentRequest?.url else { return false }
-		return URLPropertyStore.shared.contains(url: url)
+		return MockResponseStore.shared.contains(url: url)
 	}
 	
 	override public class func canonicalRequest(for request: URLRequest) -> URLRequest {
@@ -110,7 +110,7 @@ public final class MockURLProtocol: URLProtocol {
 			client?.urlProtocol(self, didFailWithError: MockNetworkingErrors.unableToRetrieveURLRequest)
 			return
 		}
-		guard let mockResponse = URLPropertyStore.shared[url] else {
+		guard let mockResponse = MockResponseStore.shared[url] else {
 			client?.urlProtocol(self, didFailWithError: MockNetworkingErrors.unableToRetrieveMockResponse)
 			return
 		}
@@ -161,7 +161,7 @@ public final class MockURLProtocol: URLProtocol {
 			URLProtocol.registerClass(MockURLProtocol.self)
 			_isRegistered = true
 		}
-		URLPropertyStore.shared[url] = response
+		MockResponseStore.shared[url] = response
 	}
 	
 	public static func register(response: HTTPURLResponse,
@@ -178,7 +178,7 @@ public final class MockURLProtocol: URLProtocol {
 												body: nil,
 												error: nil,
 												delay: delay)
-		URLPropertyStore.shared[url] = mockResponse
+		MockResponseStore.shared[url] = mockResponse
 	}
 	
 	public static func unregister() {
@@ -190,11 +190,11 @@ public final class MockURLProtocol: URLProtocol {
 	//MARK: - Other API's
 	
 	public static func clearAllResponses() {
-		URLPropertyStore.shared.removeAllReponses()
+		MockResponseStore.shared.removeAllReponses()
 	}
 	
 	@discardableResult
 	public static func clearResponse(for url: URL) -> Bool {
-		return URLPropertyStore.shared.removeResponse(for: url)
+		return MockResponseStore.shared.removeResponse(for: url)
 	}
 }

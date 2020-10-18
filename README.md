@@ -11,6 +11,12 @@ MockNetworking is available for integration into Xcode through the Swift Package
 To setup a mock response you simply need to register the response and then unregister the class when appropraite. In the example below we'll setup a response for 1 test.
 
 ```swift
+let url = try XCTUnwrap(URL(string: "https://wwww.apple.com"))
+let response = try XCTUnwrap(HTTPURLResponse(url: url,
+											statusCode: 200,
+											httpVersion: HTTPURLResponse.HTTP_1_1,
+											headerFields: nil))
+
 MockURLProtocol.register(response: response, for: url)
 defer {
 	MockURLProtocol.unregister()

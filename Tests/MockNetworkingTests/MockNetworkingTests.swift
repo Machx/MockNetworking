@@ -125,5 +125,6 @@ final class MockNetworkingTests: XCTestCase {
         ("testBasicMockResponse", testBasicMockResponse),
 		("testDelay", testDelay),
 		("testDelayRange", testDelayRange),
+		("testRemoveResponse", testRemoveResponse),
     ]
 }

@@ -71,7 +71,7 @@ final class MockNetworkingTests: XCTestCase {
 		wait(for: [expectation], timeout: 5.0)
 		
 		let result = end - start
-		XCTAssertGreaterThan(result, 1.0)
+		XCTAssertGreaterThanOrEqual(result, 1.0)
 	}
 	
 	func testDelayRange() throws {
@@ -97,7 +97,7 @@ final class MockNetworkingTests: XCTestCase {
 		wait(for: [expectation], timeout: 5.0)
 		
 		let result = end - start
-		XCTAssertGreaterThan(result, 1.0)
+		XCTAssertGreaterThanOrEqual(result, 1.0)
 	}
 	
 	func testRemoveResponse() throws {

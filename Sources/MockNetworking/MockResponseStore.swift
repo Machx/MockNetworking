@@ -25,7 +25,6 @@ final class MockResponseStore {
 		get {
 			return _storedResponses[url]
 		}
-		
 		set {
 			_storedResponses[url] = newValue
 		}
@@ -35,11 +34,11 @@ final class MockResponseStore {
 		return _storedResponses.keys.contains(url)
 	}
 	
-	func removeAllReponses() {
-		_storedResponses.removeAll()
-	}
-	
 	func removeResponse(for url: URL) -> Bool {
 		return _storedResponses.removeValue(forKey: url) != nil
+	}
+	
+	func removeAllReponses() {
+		_storedResponses.removeAll()
 	}
 }

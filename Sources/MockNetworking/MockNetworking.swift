@@ -13,7 +13,13 @@
 /// limitations under the License.
 
 struct MockNetworking {
-    let major = 0
-	let minor = 1
-	let bugfix = 0
+	struct Version {
+		static let major = 0
+		static let minor = 1
+		static let bugfix = 0
+		
+		static func versionString() -> String {
+			return "\(major).\(minor).\(bugfix)"
+		}
+	}
 }

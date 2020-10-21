@@ -16,4 +16,10 @@ import Foundation
 
 public extension HTTPURLResponse {
 	static let HTTP_1_1 = "HTTP/1.1"
+	
+	func allStringHTTPHeaders() -> [String:String]? {
+		let headers = self.allHeaderFields.getStringHeaders()
+		guard !headers.isEmpty else { return nil }
+		return headers
+	}
 }

@@ -13,8 +13,11 @@ extension Dictionary where Key == AnyHashable, Value == Any {
 	/// when you query for `allHeaderFields` you get back [AnyHashable:Any] this
 	/// is a convenience function for converting between the 2
 	
-	func getStringHeaders(from genericHeaders: [AnyHashable:Any]) -> [String:String] {
-		guard let convertedHeaders = genericHeaders as? [String:String] else { return [:] }
+	
+	/// Convenience method for converting HTTPURLResponse's allHeaderFields to [String:String]
+	/// - Returns: The dictionary as [String:String] type or an empty dictionary
+	func getStringHeaders() -> [String:String] {
+		guard let convertedHeaders = self as? [String:String] else { return [:] }
 		return convertedHeaders
 	}
 }

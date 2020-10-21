@@ -46,6 +46,12 @@ public final class MockPropertyResponse {
 		error = requestError
 		delay = responseDelay
 	}
+	
+	var headers: [String:String]? {
+		guard let localHeaders = response?.allHeaderFields,
+			  let stringHeaders = localHeaders as? [String:String] else { return nil }
+		return stringHeaders
+	}
 }
 
 public final class MockURLProtocol: URLProtocol {
@@ -140,10 +146,11 @@ public final class MockURLProtocol: URLProtocol {
 			URLProtocol.registerClass(MockURLProtocol.self)
 			_isRegistered = true
 		}
+		let headers = response.allStringHTTPHeaders() ?? [:]
 		let mockResponse = MockPropertyResponse(url: url,
 												status: response.statusCode,
 												httpVersion: HTTPURLResponse.HTTP_1_1,
-												headerFields: [:],
+												headerFields: headers,
 												body: nil,
 												error: nil,
 												delay: delay)

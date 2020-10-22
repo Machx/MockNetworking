@@ -15,7 +15,7 @@
 import Foundation
 
 public final class MockPropertyResponse {
-	typealias HTTPStatusCode = Int // Because Apple uses Int
+	public typealias HTTPStatusCode = Int // Because Apple uses Int
 	
 	var response: HTTPURLResponse?
 	var body: Data?
@@ -24,7 +24,7 @@ public final class MockPropertyResponse {
 	var bodyData: Data?
 	var delay: MockResponseDelay?
 	
-	init(url: URL,
+	public init(url: URL,
 		 status: HTTPStatusCode = 200,
 		 httpVersion version: String = HTTPURLResponse.HTTP_1_1,
 		 headerFields headers: [String: String],

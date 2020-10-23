@@ -14,16 +14,22 @@
 
 import Foundation
 
+/// Type that allows you to express a delay in response for a particular request
 public enum MockResponseDelay {
+	
 	case time(TimeInterval)
 	case range(ClosedRange<TimeInterval>)
 }
 
+/// Class Responsible for setting up a Mock Network Infrastructure for Network Tests.
 public final class MockURLProtocol: URLProtocol {
 	
 	public enum MockNetworkingErrors: Error {
+		/// Unable to retrieve a URL for the given request.
 		case unableToRetrieveURLRequest
+		/// A mock response for the given url was unable to be retrieved.
 		case unableToRetrieveMockResponse
+		/// Unable to construct a HTTPURLResponse for a given request.
 		case cannotConstructResponse
 	}
 	

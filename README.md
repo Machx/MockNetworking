@@ -22,6 +22,20 @@ defer {
 	MockURLProtocol.unregister()
 }
 ```
+This uses `HTTPURLResponse`, there is also a custom api available.
+
+```swift
+let url = try XCTUnwrap(URL(string: "https://wwww.apple.com"))
+let mockResponse = MockPropertyResponse(url: url,
+					status: 200,
+					headerFields: [:])
+
+MockURLProtocol.regigsterMock(response: mockResponse, for: url)
+defer {
+	MockURLProtocol.unregister()
+}
+```
+
 The `register` api both registers MockURLProtocol with the URLProtocol system if it isn't already registered and stores the prepared response for the given url.
 
 ## License

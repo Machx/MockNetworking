@@ -34,7 +34,7 @@ final class MockNetworkingTests: XCTestCase {
 		var receivedError: Error?
 		
 		let expectation = XCTestExpectation()
-		URLSession.sessionWith(.ephemeral, delegate: nil).downloadTask(with: url) { (url, response, error) in
+		URLSession.sessionWith(.ephemeral).downloadTask(with: url) { (url, response, error) in
 			receivedURL = response?.url
 			receivedResponse = response
 			receivedError = error
@@ -64,7 +64,7 @@ final class MockNetworkingTests: XCTestCase {
 		var receivedError: Error?
 		
 		let expectation = XCTestExpectation()
-		URLSession.sessionWith(.ephemeral, delegate: nil).downloadTask(with: url) { (url, response, error) in
+		URLSession.sessionWith(.ephemeral).downloadTask(with: url) { (url, response, error) in
 			receivedURL = response?.url
 			receivedResponse = response
 			receivedError = error
@@ -93,7 +93,7 @@ final class MockNetworkingTests: XCTestCase {
 		let expectation = XCTestExpectation()
 		let start = CFAbsoluteTimeGetCurrent()
 		var end: Double = 0
-		URLSession.sessionWith(.ephemeral, delegate: nil).downloadTask(with: url) { (_, _, _) in
+		URLSession.sessionWith(.ephemeral).downloadTask(with: url) { (_, _, _) in
 			expectation.fulfill()
 			end = CFAbsoluteTimeGetCurrent()
 		}.resume()
@@ -119,7 +119,7 @@ final class MockNetworkingTests: XCTestCase {
 		let expectation = XCTestExpectation()
 		let start = CFAbsoluteTimeGetCurrent()
 		var end: Double = 0
-		URLSession.sessionWith(.ephemeral, delegate: nil).downloadTask(with: url) { (_, _, _) in
+		URLSession.sessionWith(.ephemeral).downloadTask(with: url) { (_, _, _) in
 			expectation.fulfill()
 			end = CFAbsoluteTimeGetCurrent()
 		}.resume()
@@ -171,7 +171,7 @@ final class MockNetworkingTests: XCTestCase {
 		
 		let expectation = XCTestExpectation()
 		var headers:[AnyHashable: Any] = [:]
-		URLSession.sessionWith(.ephemeral, delegate: nil).downloadTask(with: url) { (_, response, _) in
+		URLSession.sessionWith(.ephemeral).downloadTask(with: url) { (_, response, _) in
 			if let localResponse = response,
 			   let httpResponse = localResponse as? HTTPURLResponse {
 				headers = httpResponse.allHeaderFields

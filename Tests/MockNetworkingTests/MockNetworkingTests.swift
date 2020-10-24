@@ -220,8 +220,11 @@ final class MockNetworkingTests: XCTestCase {
 
     static var allTests = [
         ("testBasicMockResponse", testBasicMockResponse),
+		("testBasicMockResponseWithMockType", testBasicMockResponseWithMockType),
 		("testDelay", testDelay),
 		("testDelayRange", testDelayRange),
 		("testRemoveResponse", testRemoveResponse),
+		("testHeaders", testHeaders),
+		("testErrorResponse", testErrorResponse),
     ]
 }

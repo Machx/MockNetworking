@@ -189,6 +189,36 @@ final class MockNetworkingTests: XCTestCase {
 			XCTFail("not equatable")
 		}
 	}
+	
+	func testErrorResponse() throws {
+		let url = try XCTUnwrap(URL(string: "https://www.apple.com"))
+		let error = NSError(domain: "com.MockNetworking.UnitTests",
+							code: 200,
+							userInfo: [ "Key1":"Value1"])
+		let mockResponse = MockPropertyResponse(url: url,
+												status: 200, httpVersion: HTTPURLResponse.HTTP_1_1,
+												headerFields: [:],
+												error: error)
+		
+		MockURLProtocol.regigsterMock(response: mockResponse, for: url)
+		defer {
+			MockURLProtocol.unregister()
+		}
+		
+		var receivedError: NSError?
+		let request = URLRequest(url: url)
+		let expectation = XCTestExpectation()
+		URLSession.sessionWith(.ephemeral).downloadTask(with: request) { (url, _, error) in
+			receivedError = error as NSError?
+			expectation.fulfill()
+		}.resume()
+		
+		wait(for: [expectation], timeout: 2.0)
+		
+		XCTAssertNotNil(receivedError)
+		XCTAssertEqual(receivedError?.code, error.code)
+		XCTAssertEqual(receivedError?.domain, error.domain)
+	}
 
     static var allTests = [
         ("testBasicMockResponse", testBasicMockResponse),

@@ -179,10 +179,8 @@ final class MockNetworkingTests: XCTestCase {
 			expectation.fulfill()
 		}.resume()
 		
-		// revert back to 2.0 when done
-		wait(for: [expectation], timeout: 30.0)
+		wait(for: [expectation], timeout: 2.0)
 		
-		//FIXME: headers received are empty, not being passed
 		if let receivedHeaders = headers as? [String:String] {
 			XCTAssertEqual(receivedHeaders, originalHeaders)
 		} else {

@@ -247,6 +247,36 @@ final class MockNetworkingTests: XCTestCase {
 		let data = try XCTUnwrap(receivedData)
 		XCTAssertEqual(data, originalData)
 	}
+	
+	func testHTTPResponse() throws {
+		let url = try XCTUnwrap(URL(string: "https://wwww.apple.com"))
+		let response = try XCTUnwrap(HTTPURLResponse(url: url,
+									   statusCode: 200,
+									   httpVersion: HTTPURLResponse.HTTP_1_1,
+									   headerFields: nil))
+		
+		MockURLProtocol.register(response: response, for: url)
+		defer {
+			MockURLProtocol.unregister()
+		}
+		
+		var receivedResponse: URLResponse?
+		let expectation = XCTestExpectation()
+		URLSession.sessionWith(.ephemeral).downloadTask(with: url) { (url, response, error) in
+			receivedResponse = response
+			expectation.fulfill()
+		}.resume()
+		
+		wait(for: [expectation], timeout: 5.0)
+		
+		XCTAssertNotNil(receivedResponse)
+		guard let receivedHTTPResponse = receivedResponse as? HTTPURLResponse else {
+			XCTFail("Could not convert Response to HTTPURLResponse type")
+			return
+		}
+		XCTAssertEqual(response.url, receivedHTTPResponse.url)
+		XCTAssertEqual(response.statusCode, receivedHTTPResponse.statusCode)
+	}
 
     static var allTests = [
         ("testBasicMockResponse", testBasicMockResponse),

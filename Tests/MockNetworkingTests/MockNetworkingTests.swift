@@ -253,7 +253,7 @@ final class MockNetworkingTests: XCTestCase {
 		let response = try XCTUnwrap(HTTPURLResponse(url: url,
 									   statusCode: 200,
 									   httpVersion: HTTPURLResponse.HTTP_1_1,
-									   headerFields: nil))
+									   headerFields: ["thing180":"thing2"]))
 		
 		MockURLProtocol.register(response: response, for: url)
 		defer {
@@ -276,6 +276,7 @@ final class MockNetworkingTests: XCTestCase {
 		}
 		XCTAssertEqual(response.url, receivedHTTPResponse.url)
 		XCTAssertEqual(response.statusCode, receivedHTTPResponse.statusCode)
+		XCTAssertEqual(response.allStringHTTPHeaders(), receivedHTTPResponse.allStringHTTPHeaders())
 	}
 
     static var allTests = [

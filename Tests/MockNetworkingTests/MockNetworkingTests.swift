@@ -286,5 +286,7 @@ final class MockNetworkingTests: XCTestCase {
 		("testRemoveResponse", testRemoveResponse),
 		("testHeaders", testHeaders),
 		("testErrorResponse", testErrorResponse),
+		("testBodyData", testBodyData),
+		("testHTTPResponse", testHTTPResponse),
     ]
 }

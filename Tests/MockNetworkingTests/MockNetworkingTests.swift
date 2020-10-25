@@ -274,6 +274,9 @@ final class MockNetworkingTests: XCTestCase {
 			XCTFail("Could not convert Response to HTTPURLResponse type")
 			return
 		}
+		// We can't compare the HTTPURLResponse we get back directly with an
+		// XCTAssertEqual(response,otherResponse) because it considers the text/mime type
+		// in equality, which ours will be nil and the received will be "text/plain"
 		XCTAssertEqual(response.url, receivedHTTPResponse.url)
 		XCTAssertEqual(response.statusCode, receivedHTTPResponse.statusCode)
 		XCTAssertEqual(response.allStringHTTPHeaders(), receivedHTTPResponse.allStringHTTPHeaders())

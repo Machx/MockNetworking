@@ -103,6 +103,10 @@ public final class MockURLProtocol: URLProtocol {
 	
 	private static var _isRegistered = false
 	
+	/// Registers MockURLProtocol and sets the values that should be responded to the given URL.
+	/// - Parameters:
+	///   - response: An object that contains the values that should be responded with to the request for the URL.
+	///   - url: The URL that should be responded to.
 	public static func regigsterMock(response: MockPropertyResponse, for url: URL) {
 		if !_isRegistered {
 			URLProtocol.registerClass(MockURLProtocol.self)
@@ -111,6 +115,11 @@ public final class MockURLProtocol: URLProtocol {
 		MockResponseStore.shared[url] = response
 	}
 	
+	/// Registers MockURLProtocol and sets the values that should be responded to the given URL in the response object.
+	/// - Parameters:
+	///   - response: A HTTPURLResponse object containing the values that should be responded with to the request for the URL.
+	///   - url: The URL that should be responded to.
+	///   - delay: An optional parameter that specifies a time value to delay the response to a given url.
 	public static func register(response: HTTPURLResponse,
 								for url: URL,
 								withDelay delay: MockResponseDelay? = nil) {

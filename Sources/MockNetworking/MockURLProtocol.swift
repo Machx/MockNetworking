@@ -138,6 +138,7 @@ public final class MockURLProtocol: URLProtocol {
 		MockResponseStore.shared[url] = mockResponse
 	}
 	
+	/// Unregisters MockURLProtocol from handling responses to network requests.
 	public static func unregister() {
 		guard _isRegistered else { return }
 		URLProtocol.unregisterClass(MockURLProtocol.self)
@@ -146,10 +147,18 @@ public final class MockURLProtocol: URLProtocol {
 	
 	//MARK: - Other API's
 	
+	/// Clears all stored responses to network requests, after this MockURLProtocol will no respond to any more requests until a response is registered.
 	public static func clearAllResponses() {
 		MockResponseStore.shared.removeAllReponses()
 	}
 	
+	/// Clears a response to a specific URL
+	///
+	/// Once a response is cleared, MockURLProtocol will not respond to a given URL until another
+	/// response is registered.
+	///
+	/// - Parameter url: A URL who's corresponding response should be cleared.
+	/// - Returns: A value of true if the response was removed, false otherwise.
 	@discardableResult
 	public static func clearResponse(for url: URL) -> Bool {
 		return MockResponseStore.shared.removeResponse(for: url)

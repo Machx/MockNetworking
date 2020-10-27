@@ -16,8 +16,9 @@ import Foundation
 
 /// Type that allows you to express a delay in response for a particular request
 public enum MockResponseDelay {
-	
+	// Specifies that a request should be delayed by a specific time period
 	case time(TimeInterval)
+	// Specifies that a request should be delayed by a random value in the specified range
 	case range(ClosedRange<TimeInterval>)
 }
 

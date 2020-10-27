@@ -24,6 +24,15 @@ public final class MockPropertyResponse {
 	var bodyData: Data?
 	var delay: MockResponseDelay?
 	
+	/// Designated initializer for MockPropertyResponse.
+	/// - Parameters:
+	///   - url: The URL this response should be for.
+	///   - status: The HTTP Status code that should be used to respond to the Request for the URL.
+	///   - version: A HTTP Version that should be used in the response.
+	///   - headers: The Headers that should be included in the response.
+	///   - body: The Body Data that should be included in the response.
+	///   - requestError: The Error that should be included.
+	///   - responseDelay: An optional parameter that can be set to induce an artificial delay.
 	public init(url: URL,
 		 status: HTTPStatusCode = 200,
 		 httpVersion version: String = HTTPURLResponse.HTTP_1_1,

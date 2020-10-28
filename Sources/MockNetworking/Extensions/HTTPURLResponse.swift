@@ -22,6 +22,13 @@ public extension HTTPURLResponse {
 		guard !headers.isEmpty else { return nil }
 		return headers
 	}
+	
+	
+	/// Tests HTTPURLResponse for equality for Unit Testing Purposes.
+	///
+	/// This version of equality tests the url, status code and headers for equality.
+	/// - Parameter otherResponse: The other HTTPURLResponse to test for equality.
+	/// - Returns: True if both responses have the same status code, url, and headers.
 	func isBasicallyEqual(to otherResponse: HTTPURLResponse) -> Bool {
 		guard self.url == otherResponse.url,
 			  self.statusCode == otherResponse.statusCode,
@@ -31,6 +38,11 @@ public extension HTTPURLResponse {
 		return true
 	}
 	
+	/// Tests the other URLResponse to see if it can be cast to a HTTPURLResponse and then tests for equality.
+	///
+	/// Once this function successfully casts otherResponse to a HTTPURLResponse it calls isBasicallyEqual for 2 HTTPURLResponses.
+	/// - Parameter otherResponse: The other response to test for equality.
+	/// - Returns: True if both responses have the same status code, url and headers.
 	func isBasicallyEqual(to otherResponse: URLResponse) -> Bool {
 		guard let localHTTPResponse = otherResponse as? HTTPURLResponse else { return false }
 		return self.isBasicallyEqual(to: localHTTPResponse)

@@ -31,4 +31,8 @@ public extension HTTPURLResponse {
 		return true
 	}
 	
+	func isBasicallyEqual(to otherResponse: URLResponse) -> Bool {
+		guard let localHTTPResponse = otherResponse as? HTTPURLResponse else { return false }
+		return self.isBasicallyEqual(to: localHTTPResponse)
+	}
 }

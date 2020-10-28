@@ -22,4 +22,13 @@ public extension HTTPURLResponse {
 		guard !headers.isEmpty else { return nil }
 		return headers
 	}
+	func isBasicallyEqual(to otherResponse: HTTPURLResponse) -> Bool {
+		guard self.url == otherResponse.url,
+			  self.statusCode == otherResponse.statusCode,
+			  self.allStringHTTPHeaders() == otherResponse.allStringHTTPHeaders() else {
+			return false
+		}
+		return true
+	}
+	
 }

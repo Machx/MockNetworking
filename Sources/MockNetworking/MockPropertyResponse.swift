@@ -18,7 +18,6 @@ public final class MockPropertyResponse {
 	public typealias HTTPStatusCode = Int // Because Apple uses Int
 	
 	var response: HTTPURLResponse?
-	var body: Data?
 	var error: Error?
 	var httpVersion: String = HTTPURLResponse.HTTP_1_1
 	var bodyData: Data?

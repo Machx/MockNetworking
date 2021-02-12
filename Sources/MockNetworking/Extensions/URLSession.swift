@@ -15,6 +15,12 @@
 import Foundation
 
 public extension URLSession {
+	
+	/// Convenience function for easy URLSession setup
+	/// - Parameters:
+	///   - configuration: The URLSession configuration to use
+	///   - delegate: The URLSession delegate to assign
+	/// - Returns: A URLSession configured with the given parameters.
 	class func sessionWith(_ configuration: URLSessionConfiguration?, delegate: URLSessionDownloadDelegate? = nil) -> URLSession {
 		let configuration = configuration ?? URLSessionConfiguration.ephemeral
 		configuration.protocolClasses = [MockURLProtocol.self]

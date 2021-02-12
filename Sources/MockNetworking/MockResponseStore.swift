@@ -13,32 +13,44 @@
 /// limitations under the License.
 
 import Foundation
+import Konkyo
 
 final class MockResponseStore {
 	static let shared = MockResponseStore()
 	
 	private var _storedResponses = [URL: MockPropertyResponse]()
+	private var _load_mutex = Mutex()
 	
 	init() {}
 	
 	subscript(url: URL) -> MockPropertyResponse? {
 		get {
+			_load_mutex.lock()
+			defer { _load_mutex.unlock() }
 			return _storedResponses[url]
 		}
 		set {
+			_load_mutex.lock()
+			defer { _load_mutex.unlock() }
 			_storedResponses[url] = newValue
 		}
 	}
 	
 	func contains(url: URL) -> Bool {
+		_load_mutex.lock()
+		defer { _load_mutex.unlock() }
 		return _storedResponses.keys.contains(url)
 	}
 	
 	func removeResponse(for url: URL) -> Bool {
+		_load_mutex.lock()
+		defer { _load_mutex.unlock() }
 		return _storedResponses.removeValue(forKey: url) != nil
 	}
 	
 	func removeAllReponses() {
+		_load_mutex.lock()
+		defer { _load_mutex.unlock() }
 		_storedResponses.removeAll()
 	}
 }

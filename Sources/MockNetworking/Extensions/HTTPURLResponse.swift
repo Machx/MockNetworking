@@ -17,6 +17,10 @@ import Foundation
 public extension HTTPURLResponse {
 	static let HTTP_1_1 = "HTTP/1.1"
 	
+	/// Returns all the String value headers if the header fields can be returned as that
+	///
+	/// This casts the headers to string values and then returns the string header values
+	/// - Returns: The headers as string values, otherwise nil.
 	func allStringHTTPHeaders() -> [String:String]? {
 		let headers = self.allHeaderFields.getStringHeaders()
 		guard !headers.isEmpty else { return nil }

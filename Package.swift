@@ -16,8 +16,6 @@ let package = Package(
             targets: ["MockNetworking"]),
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
 		.package(url: "https://github.com/Machx/Konkyo.git", .branch("main")),
     ],
     targets: [

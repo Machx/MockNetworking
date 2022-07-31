@@ -280,6 +280,9 @@ final class MockNetworkingTests: XCTestCase {
 		XCTAssertEqual(response.url, receivedHTTPResponse.url)
 		XCTAssertEqual(response.statusCode, receivedHTTPResponse.statusCode)
 		XCTAssertEqual(response.allStringHTTPHeaders(), receivedHTTPResponse.allStringHTTPHeaders())
+
+		let header = try XCTUnwrap(receivedHTTPResponse.allHeaderFields["thing180"] as? String)
+		XCTAssertEqual(header, "thing2")
 	}
 
     static var allTests = [

@@ -25,9 +25,7 @@ final class MockNetworkingTests: XCTestCase {
 									   headerFields: nil))
 		
 		MockURLProtocol.register(response: response, for: url)
-		defer {
-			MockURLProtocol.unregister()
-		}
+		defer { MockURLProtocol.unregister() }
 		
 		var receivedURL: URL?
 		var receivedResponse: URLResponse?
@@ -55,9 +53,7 @@ final class MockNetworkingTests: XCTestCase {
 												headerFields: [:])
 		
 		MockURLProtocol.regigsterMock(response: mockResponse, for: url)
-		defer {
-			MockURLProtocol.unregister()
-		}
+		defer { MockURLProtocol.unregister() }
 		
 		var receivedURL: URL?
 		var receivedResponse: URLResponse?
@@ -86,9 +82,7 @@ final class MockNetworkingTests: XCTestCase {
 													 headerFields: nil))
 		
 		MockURLProtocol.register(response: response, for: url, withDelay: .time(1.0))
-		defer {
-			MockURLProtocol.unregister()
-		}
+		defer { MockURLProtocol.unregister() }
 		
 		let expectation = XCTestExpectation()
 		let start = CFAbsoluteTimeGetCurrent()
@@ -112,9 +106,7 @@ final class MockNetworkingTests: XCTestCase {
 													 headerFields: nil))
 		
 		MockURLProtocol.register(response: response, for: url, withDelay: .range(1...2))
-		defer {
-			MockURLProtocol.unregister()
-		}
+		defer { MockURLProtocol.unregister() }
 		
 		let expectation = XCTestExpectation()
 		let start = CFAbsoluteTimeGetCurrent()
@@ -140,9 +132,7 @@ final class MockNetworkingTests: XCTestCase {
 		MockURLProtocol.register(response: response,
 								 for: url,
 								 withDelay: .range(1...2))
-		defer {
-			MockURLProtocol.unregister()
-		}
+		defer { MockURLProtocol.unregister() }
 		
 		let request = URLRequest(url: url)
 		XCTAssertTrue(MockURLProtocol.canInit(with: request))
@@ -165,9 +155,7 @@ final class MockNetworkingTests: XCTestCase {
 		MockURLProtocol.register(response: response,
 								 for: url,
 								 withDelay: .range(1...2))
-		defer {
-			MockURLProtocol.unregister()
-		}
+		defer { MockURLProtocol.unregister() }
 		
 		let expectation = XCTestExpectation()
 		var headers:[AnyHashable: Any] = [:]
@@ -199,9 +187,7 @@ final class MockNetworkingTests: XCTestCase {
 												error: error)
 		
 		MockURLProtocol.regigsterMock(response: mockResponse, for: url)
-		defer {
-			MockURLProtocol.unregister()
-		}
+		defer { MockURLProtocol.unregister() }
 		
 		var receivedError: NSError?
 		let request = URLRequest(url: url)
@@ -230,9 +216,7 @@ final class MockNetworkingTests: XCTestCase {
 												body: originalData)
 		
 		MockURLProtocol.regigsterMock(response: mockResponse, for: url)
-		defer {
-			MockURLProtocol.unregister()
-		}
+		defer { MockURLProtocol.unregister() }
 		
 		let expectation = XCTestExpectation()
 		let request = URLRequest(url: url)
@@ -256,9 +240,7 @@ final class MockNetworkingTests: XCTestCase {
 									   headerFields: ["thing180":"thing2"]))
 		
 		MockURLProtocol.register(response: response, for: url)
-		defer {
-			MockURLProtocol.unregister()
-		}
+		defer { MockURLProtocol.unregister() }
 		
 		var receivedResponse: URLResponse?
 		let expectation = XCTestExpectation()

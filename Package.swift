@@ -1,4 +1,4 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.8
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -6,8 +6,8 @@ import PackageDescription
 let package = Package(
     name: "MockNetworking",
 	platforms: [
-		.macOS(.v12),
-		.iOS(.v15),
+		.macOS(.v13),
+		.iOS(.v16),
 	],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
@@ -16,7 +16,7 @@ let package = Package(
             targets: ["MockNetworking"]),
     ],
     dependencies: [
-		.package(url: "https://github.com/Machx/Konkyo.git", .branch("main")),
+		.package(url: "https://github.com/Machx/Konkyo.git", branch: "main"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.

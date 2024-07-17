@@ -20,8 +20,10 @@ import Konkyo
 /// This class is thread safe and will atomically read & update values.
 final class MockResponseStore {
 	static let shared = MockResponseStore()
-	
+
+	// Actual backing store for the URL Responses.
 	private var _storedResponses = [URL: MockPropertyResponse]()
+	// Mutex to help ensure thread safety and atomicity.
 	private var _load_mutex = Mutex()
 	
 	init() {}

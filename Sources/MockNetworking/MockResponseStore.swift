@@ -15,6 +15,9 @@
 import Foundation
 import Konkyo
 
+/// Central location for storing the responses for given URL's.
+///
+/// This class is thread safe and will atomically read & update values.
 final class MockResponseStore {
 	static let shared = MockResponseStore()
 	

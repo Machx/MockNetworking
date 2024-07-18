@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Machx/Konkyo.git",
       "state" : {
-        "branch" : "main",
-        "revision" : "d23751005fb226a21e584d1ad70be551c490a40e"
+        "revision" : "b4a01fb362f754b706f30270d9f242b4501b6e42",
+        "version" : "0.5.0"
       }
     }
   ],

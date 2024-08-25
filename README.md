@@ -30,7 +30,7 @@ let mockResponse = MockPropertyResponse(url: url,
 					status: 200,
 					headerFields: [:])
 
-MockURLProtocol.regigsterMock(response: mockResponse, for: url)
+MockURLProtocol.registerMock(response: mockResponse, for: url)
 defer {
 	MockURLProtocol.unregister()
 }

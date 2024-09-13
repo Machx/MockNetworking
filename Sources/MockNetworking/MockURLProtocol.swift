@@ -107,7 +107,7 @@ public final class MockURLProtocol: URLProtocol {
 	/// - Parameters:
 	///   - response: An object that contains the values that should be responded with to the request for the URL.
 	///   - url: The URL that should be responded to.
-	public static func regigsterMock(response: MockPropertyResponse, for url: URL) {
+	public static func registerMock(response: MockPropertyResponse, for url: URL) {
 		if !_isRegistered {
 			URLProtocol.registerClass(MockURLProtocol.self)
 			_isRegistered = true

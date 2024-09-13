@@ -52,7 +52,7 @@ final class MockNetworkingTests: XCTestCase {
 												status: 200,
 												headerFields: [:])
 		
-		MockURLProtocol.regigsterMock(response: mockResponse, for: url)
+		MockURLProtocol.registerMock(response: mockResponse, for: url)
 		defer { MockURLProtocol.unregister() }
 		
 		var receivedURL: URL?
@@ -186,7 +186,7 @@ final class MockNetworkingTests: XCTestCase {
 												headerFields: [:],
 												error: error)
 		
-		MockURLProtocol.regigsterMock(response: mockResponse, for: url)
+		MockURLProtocol.registerMock(response: mockResponse, for: url)
 		defer { MockURLProtocol.unregister() }
 		
 		var receivedError: NSError?
@@ -215,7 +215,7 @@ final class MockNetworkingTests: XCTestCase {
 												headerFields: [:],
 												body: originalData)
 		
-		MockURLProtocol.regigsterMock(response: mockResponse, for: url)
+		MockURLProtocol.registerMock(response: mockResponse, for: url)
 		defer { MockURLProtocol.unregister() }
 		
 		let expectation = XCTestExpectation()

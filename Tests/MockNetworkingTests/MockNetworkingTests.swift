@@ -37,7 +37,7 @@ func testBasicMockResponse() async throws {
 	var receivedError: Error?
 
 	do {
-		let (data,taskResponse) =  try await URLSession.sessionWith(.ephemeral).data(from: url)
+		let (_,taskResponse) =  try await URLSession.sessionWith(.ephemeral).data(from: url)
 		receivedURL = response.url
 		receivedResponse = taskResponse
 	} catch {

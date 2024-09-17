@@ -16,13 +16,18 @@ import XCTest
 import MockNetworking
 import Testing
 
+enum MockNetworkingTestError: Error {
+	case couldNotUnwrapURL
+	case couldNotUnwrapHTTPURLResponse
+}
+
 @Test("Test Basic Mock Response")
-func testBasicMockResponse() throws {
-	let url = try XCTUnwrap(URL(string: "https://wwww.apple.com"))
-	let response = try XCTUnwrap(HTTPURLResponse(url: url,
-								   statusCode: 200,
-								   httpVersion: HTTPURLResponse.HTTP_1_1,
-								   headerFields: nil))
+func testBasicMockResponse() async throws {
+	guard let url = URL(string: "https://wwww.apple.com") else { throw MockNetworkingTestError.couldNotUnwrapURL }
+	guard let response = HTTPURLResponse(url: url,
+										 statusCode: 200,
+										 httpVersion: HTTPURLResponse.HTTP_1_1,
+										 headerFields: nil) else { throw MockNetworkingTestError.couldNotUnwrapHTTPURLResponse }
 
 	MockURLProtocol.register(response: response, for: url)
 	defer { MockURLProtocol.unregister() }
@@ -31,19 +36,17 @@ func testBasicMockResponse() throws {
 	var receivedResponse: URLResponse?
 	var receivedError: Error?
 
-	let expectation = XCTestExpectation()
-	URLSession.sessionWith(.ephemeral).downloadTask(with: url) { (url, response, error) in
-		receivedURL = response?.url
-		receivedResponse = response
+	do {
+		let (data,taskResponse) =  try await URLSession.sessionWith(.ephemeral).data(from: url)
+		receivedURL = response.url
+		receivedResponse = taskResponse
+	} catch {
 		receivedError = error
-		expectation.fulfill()
-	}.resume()
+	}
 
-	//wait(for: [expectation], timeout: 5.0)
-
-//	XCTAssertEqual(url, receivedURL)
-//	XCTAssertNotNil(receivedResponse)
-//	XCTAssertNil(receivedError)
+	#expect(url == receivedURL)
+	#expect(receivedResponse != nil)
+	#expect(receivedError == nil)
 }
 
 final class MockNetworkingTests: XCTestCase {

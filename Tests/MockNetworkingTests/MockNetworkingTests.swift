@@ -17,8 +17,7 @@ import MockNetworking
 import Testing
 
 enum MockNetworkingTestError: Error {
-	case couldNotUnwrapURL
-	case couldNotUnwrapHTTPURLResponse
+	case couldNotUnwrapPreparedResponse
 }
 
 @Test("Test Basic Mock Response")
@@ -27,7 +26,7 @@ func testBasicMockResponse() async throws {
 		  let response = HTTPURLResponse(url: url,
 										 statusCode: 200,
 										 httpVersion: HTTPURLResponse.HTTP_1_1,
-										 headerFields: nil) else { throw MockNetworkingTestError.couldNotUnwrapHTTPURLResponse }
+										 headerFields: nil) else { throw MockNetworkingTestError.couldNotUnwrapPreparedResponse }
 
 	MockURLProtocol.register(response: response, for: url)
 	defer { MockURLProtocol.unregister() }

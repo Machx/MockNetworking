@@ -23,8 +23,8 @@ enum MockNetworkingTestError: Error {
 
 @Test("Test Basic Mock Response")
 func testBasicMockResponse() async throws {
-	guard let url = URL(string: "https://wwww.apple.com") else { throw MockNetworkingTestError.couldNotUnwrapURL }
-	guard let response = HTTPURLResponse(url: url,
+	guard let url = URL(string: "https://wwww.apple.com"),
+		  let response = HTTPURLResponse(url: url,
 										 statusCode: 200,
 										 httpVersion: HTTPURLResponse.HTTP_1_1,
 										 headerFields: nil) else { throw MockNetworkingTestError.couldNotUnwrapHTTPURLResponse }

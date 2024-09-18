@@ -48,6 +48,33 @@ func testBasicMockResponse() async throws {
 	#expect(receivedError == nil)
 }
 
+func testBasicMockResponseWithMockType() async throws {
+	guard let url = URL(string: "https://wwww.apple.com") else {
+		throw MockNetworkingTestError.couldNotUnwrapPreparedResponse
+	}
+	let mockResponse = MockPropertyResponse(url: url,
+											status: 200,
+											headerFields: [:])
+
+	MockURLProtocol.registerMock(response: mockResponse, for: url)
+	defer { MockURLProtocol.unregister() }
+
+	var receivedURL: URL?
+	var receivedResponse: URLResponse?
+	var receivedError: Error?
+	do {
+		let (_, taskResponse) = try await URLSession.sessionWith(.ephemeral).data(from: url)
+		receivedURL = taskResponse.url
+		receivedResponse = taskResponse
+	} catch {
+		receivedError = error
+	}
+
+	#expect(url == receivedURL)
+	#expect(receivedResponse != nil)
+	#expect(receivedError == nil)
+}
+
 final class MockNetworkingTests: XCTestCase {
 	
 	func testBasicMockResponseWithMockType() throws {

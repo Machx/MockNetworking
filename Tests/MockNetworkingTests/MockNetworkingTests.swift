@@ -48,6 +48,7 @@ func testBasicMockResponse() async throws {
 	#expect(receivedError == nil)
 }
 
+@Test("Test Basic Mock Response with Mock Type")
 func testBasicMockResponseWithMockType() async throws {
 	guard let url = URL(string: "https://wwww.apple.com") else {
 		throw MockNetworkingTestError.couldNotUnwrapPreparedResponse

@@ -76,6 +76,27 @@ func testBasicMockResponseWithMockType() async throws {
 	#expect(receivedError == nil)
 }
 
+@Test("Test Delay API")
+func testDelay() async throws {
+	guard let url = URL(string: "https://wwww.apple.com"),
+		  let response = HTTPURLResponse(url: url,
+										 statusCode: 200,
+										 httpVersion: HTTPURLResponse.HTTP_1_1,
+										 headerFields: nil) else {
+		throw MockNetworkingTestError.couldNotUnwrapPreparedResponse
+	}
+
+	MockURLProtocol.register(response: response, for: url, withDelay: .time(1.0))
+	defer { MockURLProtocol.unregister() }
+
+	let start = CFAbsoluteTimeGetCurrent()
+	let (_,_) = try await URLSession.sessionWith(.ephemeral).data(from: url)
+	let end = CFAbsoluteTimeGetCurrent()
+
+	let result = end - start
+	#expect(result >= 1.0)
+}
+
 final class MockNetworkingTests: XCTestCase {
 	
 	func testDelay() throws {

@@ -48,6 +48,35 @@ func testBasicMockResponse() async throws {
 	#expect(receivedError == nil)
 }
 
+func testBasicMockResponse() throws {
+	let url = try XCTUnwrap(URL(string: "https://wwww.apple.com"))
+	let response = try XCTUnwrap(HTTPURLResponse(url: url,
+								   statusCode: 200,
+								   httpVersion: HTTPURLResponse.HTTP_1_1,
+								   headerFields: nil))
+
+	MockURLProtocol.register(response: response, for: url)
+	defer { MockURLProtocol.unregister() }
+
+	var receivedURL: URL?
+	var receivedResponse: URLResponse?
+	var receivedError: Error?
+
+	let expectation = XCTestExpectation()
+	URLSession.sessionWith(.ephemeral).downloadTask(with: url) { (url, response, error) in
+		receivedURL = response?.url
+		receivedResponse = response
+		receivedError = error
+		expectation.fulfill()
+	}.resume()
+
+	wait(for: [expectation], timeout: 5.0)
+
+	XCTAssertEqual(url, receivedURL)
+	XCTAssertNotNil(receivedResponse)
+	XCTAssertNil(receivedError)
+}
+
 final class MockNetworkingTests: XCTestCase {
 	
     func testBasicMockResponse() throws {

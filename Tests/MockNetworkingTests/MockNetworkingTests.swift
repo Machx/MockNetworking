@@ -116,6 +116,25 @@ func testDelayRange() async throws {
 	#expect((end - start) >= 1.0)
 }
 
+func testRemoveResponse() throws {
+	let url = try XCTUnwrap(URL(string: "https://wwww.apple.com"))
+	let response = try XCTUnwrap(HTTPURLResponse(url: url,
+												 statusCode: 200,
+												 httpVersion: HTTPURLResponse.HTTP_1_1,
+												 headerFields: nil))
+
+	MockURLProtocol.register(response: response,
+							 for: url,
+							 withDelay: .range(1...2))
+	defer { MockURLProtocol.unregister() }
+
+	let request = URLRequest(url: url)
+	XCTAssertTrue(MockURLProtocol.canInit(with: request))
+
+	MockURLProtocol.clearResponse(for: url)
+	XCTAssertFalse(MockURLProtocol.canInit(with: request))
+}
+
 final class MockNetworkingTests: XCTestCase {
 	
 	func testRemoveResponse() throws {

@@ -97,28 +97,23 @@ func testDelay() async throws {
 	#expect(result >= 1.0)
 }
 
-func testDelayRange() throws {
-	let url = try XCTUnwrap(URL(string: "https://wwww.apple.com"))
-	let response = try XCTUnwrap(HTTPURLResponse(url: url,
-												 statusCode: 200,
-												 httpVersion: HTTPURLResponse.HTTP_1_1,
-												 headerFields: nil))
+@Test("Test Delay Range")
+func testDelayRange() async throws {
+	guard let url = URL(string: "https://wwww.apple.com"),
+		  let response = HTTPURLResponse(url: url,
+										 statusCode: 200,
+										 httpVersion: HTTPURLResponse.HTTP_1_1,
+										 headerFields: nil) else {
+		throw MockNetworkingTestError.couldNotUnwrapPreparedResponse
+	}
 
 	MockURLProtocol.register(response: response, for: url, withDelay: .range(1...2))
 	defer { MockURLProtocol.unregister() }
 
-	let expectation = XCTestExpectation()
 	let start = CFAbsoluteTimeGetCurrent()
-	var end: Double = 0
-	URLSession.sessionWith(.ephemeral).downloadTask(with: url) { (_, _, _) in
-		expectation.fulfill()
-		end = CFAbsoluteTimeGetCurrent()
-	}.resume()
-
-	//wait(for: [expectation], timeout: 5.0)
-
-	let result = end - start
-	XCTAssertGreaterThanOrEqual(result, 1.0)
+	let (_,_) = try await URLSession.sessionWith(.ephemeral).data(from: url)
+	let end = CFAbsoluteTimeGetCurrent()
+	#expect((end - start) >= 1.0)
 }
 
 final class MockNetworkingTests: XCTestCase {

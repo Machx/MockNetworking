@@ -168,8 +168,11 @@ func testHeaders() async throws {
 	#expect(receivedHeaders == originalHeaders)
 }
 
-func testErrorResponse() throws {
-	let url = try XCTUnwrap(URL(string: "https://www.\(Int.random(in: 1...10000000)).com"))
+@Test("Test Error Response")
+func testErrorResponse() async throws {
+	guard let url = URL(string: "https://www.\(Int.random(in: 1...10000000)).com") else {
+		throw MockNetworkingTestError.couldNotUnwrapPreparedResponse
+	}
 	let error = NSError(domain: "com.MockNetworking.UnitTests",
 						code: 200,
 						userInfo: [ "Key1":"Value1"])
@@ -183,17 +186,14 @@ func testErrorResponse() throws {
 
 	var receivedError: NSError?
 	let request = URLRequest(url: url)
-	let expectation = XCTestExpectation()
-	URLSession.sessionWith(.ephemeral).downloadTask(with: request) { (url, _, error) in
-		receivedError = error as NSError?
-		expectation.fulfill()
-	}.resume()
+	do {
+		let (_,_) = try await URLSession.sessionWith(.ephemeral).data(for: request)
+	} catch {
+		receivedError = error as NSError
+	}
 
-	wait(for: [expectation], timeout: 2.0)
-
-	XCTAssertNotNil(receivedError)
-	XCTAssertEqual(receivedError?.code, error.code)
-	XCTAssertEqual(receivedError?.domain, error.domain)
+	#expect(receivedError?.code == error.code)
+	#expect(receivedError?.domain == error.domain)
 }
 
 final class MockNetworkingTests: XCTestCase {

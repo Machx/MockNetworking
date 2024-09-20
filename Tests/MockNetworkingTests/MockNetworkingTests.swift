@@ -22,7 +22,7 @@ enum MockNetworkingTestError: Error {
 
 @Test("Test Basic Mock Response")
 func testBasicMockResponse() async throws {
-	guard let url = URL(string: "https://wwww.apple.com"),
+	guard let url = URL(string: "https://www.\(Int.random(in: 1...10000000)).com"),
 		  let response = HTTPURLResponse(url: url,
 										 statusCode: 200,
 										 httpVersion: HTTPURLResponse.HTTP_1_1,
@@ -50,7 +50,7 @@ func testBasicMockResponse() async throws {
 
 @Test("Test Basic Mock Response with Mock Type")
 func testBasicMockResponseWithMockType() async throws {
-	guard let url = URL(string: "https://wwww.apple.com") else {
+	guard let url = URL(string: "https://www.\(Int.random(in: 1...10000000)).com") else {
 		throw MockNetworkingTestError.couldNotUnwrapPreparedResponse
 	}
 	let mockResponse = MockPropertyResponse(url: url,
@@ -78,7 +78,7 @@ func testBasicMockResponseWithMockType() async throws {
 
 @Test("Test Delay API")
 func testDelay() async throws {
-	guard let url = URL(string: "https://wwww.apple.com"),
+	guard let url = URL(string: "https://www.\(Int.random(in: 1...10000000)).com"),
 		  let response = HTTPURLResponse(url: url,
 										 statusCode: 200,
 										 httpVersion: HTTPURLResponse.HTTP_1_1,
@@ -99,7 +99,7 @@ func testDelay() async throws {
 
 @Test("Test Delay Range")
 func testDelayRange() async throws {
-	guard let url = URL(string: "https://wwww.apple.com"),
+	guard let url = URL(string: "https://www.\(Int.random(in: 1...10000000)).com"),
 		  let response = HTTPURLResponse(url: url,
 										 statusCode: 200,
 										 httpVersion: HTTPURLResponse.HTTP_1_1,
@@ -118,7 +118,7 @@ func testDelayRange() async throws {
 
 @Test("Test Remove Response")
 func testRemoveResponse() throws {
-	guard let url = URL(string: "https://wwww.apple.com"),
+	guard let url = URL(string: "https://www.\(Int.random(in: 1...10000000)).com"),
 		  let response = HTTPURLResponse(url: url,
 										 statusCode: 200,
 										 httpVersion: HTTPURLResponse.HTTP_1_1,
@@ -144,7 +144,7 @@ func testHeaders() async throws {
 		"Thing1" : "Thing2"
 	]
 
-	guard let url = URL(string: "https://wwww.apple.com"),
+	guard let url = URL(string: "https://www.\(Int.random(in: 1...10000000)).com"),
 		  let response = HTTPURLResponse(url: url,
 										 statusCode: 200,
 										 httpVersion: HTTPURLResponse.HTTP_1_1,
@@ -171,7 +171,7 @@ func testHeaders() async throws {
 final class MockNetworkingTests: XCTestCase {
 	
 	func testErrorResponse() throws {
-		let url = try XCTUnwrap(URL(string: "https://www.apple.com"))
+		let url = try XCTUnwrap(URL(string: "https://www.\(Int.random(in: 1...10000000)).com"))
 		let error = NSError(domain: "com.MockNetworking.UnitTests",
 							code: 200,
 							userInfo: [ "Key1":"Value1"])
@@ -199,8 +199,8 @@ final class MockNetworkingTests: XCTestCase {
 	}
 	
 	func testBodyData() throws {
-		let url = try XCTUnwrap(URL(string: "https://www.apple.com"))
-		
+		let url = try XCTUnwrap(URL(string: "https://www.\(Int.random(in: 1...10000000)).com"))
+
 		let originalString = "Hello World"
 		let originalData = originalString.data(using: .utf8)
 		
@@ -227,7 +227,7 @@ final class MockNetworkingTests: XCTestCase {
 	}
 	
 	func testHTTPResponse() throws {
-		let url = try XCTUnwrap(URL(string: "https://wwww.apple.com"))
+		let url = try XCTUnwrap(URL(string: "https://www.\(Int.random(in: 1...10000000)).com"))
 		let response = try XCTUnwrap(HTTPURLResponse(url: url,
 									   statusCode: 200,
 									   httpVersion: HTTPURLResponse.HTTP_1_1,

@@ -138,39 +138,34 @@ func testRemoveResponse() throws {
 	#expect(MockURLProtocol.canInit(with: request) == false)
 }
 
-func testHeaders() throws {
+@Test("Test Headers")
+func testHeaders() async throws {
 	let originalHeaders = [
 		"Thing1" : "Thing2"
 	]
 
-	let url = try XCTUnwrap(URL(string: "https://wwww.apple.com"))
-	let response = try XCTUnwrap(HTTPURLResponse(url: url,
-												 statusCode: 200,
-												 httpVersion: HTTPURLResponse.HTTP_1_1,
-												 headerFields: originalHeaders))
+	guard let url = URL(string: "https://wwww.apple.com"),
+		  let response = HTTPURLResponse(url: url,
+										 statusCode: 200,
+										 httpVersion: HTTPURLResponse.HTTP_1_1,
+										 headerFields: originalHeaders) else {
+		throw MockNetworkingTestError.couldNotUnwrapPreparedResponse
+	}
 
 	MockURLProtocol.register(response: response,
 							 for: url,
 							 withDelay: .range(1...2))
 	defer { MockURLProtocol.unregister() }
 
-	let expectation = XCTestExpectation()
 	var headers = [AnyHashable: Any]()
-	URLSession.sessionWith(.ephemeral).downloadTask(with: url) { (_, response, _) in
-		if let localResponse = response,
-		   let httpResponse = localResponse as? HTTPURLResponse {
-			headers = httpResponse.allHeaderFields
-		}
-		expectation.fulfill()
-	}.resume()
-
-	wait(for: [expectation], timeout: 2.0)
-
-	if let receivedHeaders = headers as? [String:String] {
-		XCTAssertEqual(receivedHeaders, originalHeaders)
-	} else {
-		XCTFail("not equatable")
+	let (_,taskResponse) = try await URLSession.sessionWith(.ephemeral).data(from: url)
+	if let httpResponse = taskResponse as? HTTPURLResponse {
+		headers = httpResponse.allHeaderFields
 	}
+
+	struct CouldNotCompareHeadersError: Error {}
+	guard let receivedHeaders = headers as? [String:String] else { throw CouldNotCompareHeadersError() }
+	#expect(receivedHeaders == originalHeaders)
 }
 
 final class MockNetworkingTests: XCTestCase {

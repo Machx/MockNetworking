@@ -116,12 +116,15 @@ func testDelayRange() async throws {
 	#expect((end - start) >= 1.0)
 }
 
+@Test("Test Remove Response")
 func testRemoveResponse() throws {
-	let url = try XCTUnwrap(URL(string: "https://wwww.apple.com"))
-	let response = try XCTUnwrap(HTTPURLResponse(url: url,
-												 statusCode: 200,
-												 httpVersion: HTTPURLResponse.HTTP_1_1,
-												 headerFields: nil))
+	guard let url = URL(string: "https://wwww.apple.com"),
+		  let response = HTTPURLResponse(url: url,
+										 statusCode: 200,
+										 httpVersion: HTTPURLResponse.HTTP_1_1,
+										 headerFields: nil) else {
+		throw MockNetworkingTestError.couldNotUnwrapPreparedResponse
+	}
 
 	MockURLProtocol.register(response: response,
 							 for: url,
@@ -129,10 +132,10 @@ func testRemoveResponse() throws {
 	defer { MockURLProtocol.unregister() }
 
 	let request = URLRequest(url: url)
-	XCTAssertTrue(MockURLProtocol.canInit(with: request))
+	#expect(MockURLProtocol.canInit(with: request) == true)
 
 	MockURLProtocol.clearResponse(for: url)
-	XCTAssertFalse(MockURLProtocol.canInit(with: request))
+	#expect(MockURLProtocol.canInit(with: request) == false)
 }
 
 final class MockNetworkingTests: XCTestCase {

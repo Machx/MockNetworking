@@ -251,6 +251,27 @@ struct MockNetworkingTests {
 
 	@Test("Test Response Equality Functions")
 	func testResponseEquality() async throws {
-		
+		guard let url = URL(string: "https://www.\(Int.random(in: 1...10000000)).com"),
+		let httpResponse = HTTPURLResponse(url: url,
+										   statusCode: 200,
+										   httpVersion: "HTTP/1.1",
+										   headerFields: [
+											"Test" : "test"
+										   ]) else {
+											   throw MockNetworkingTestError.couldNotUnwrapVariable
+										   }
+
+		let urlResponse = httpResponse as URLResponse
+		#expect(httpResponse.isBasicallyEqual(to: urlResponse))
+
+		guard let httpResponse2 = HTTPURLResponse(url: url,
+												  statusCode: 200,
+												  httpVersion: "HTTP/1.1",
+												  headerFields: [
+													"Test" : "test"
+												  ]) else {
+			throw MockNetworkingTestError.couldNotUnwrapVariable
+		}
+		#expect(httpResponse2.isBasicallyEqual(to: httpResponse))
 	}
 }

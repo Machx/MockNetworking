@@ -21,6 +21,11 @@ enum MockNetworkingTestError: Error {
 	case couldNotUnwrapVariable
 }
 
+@Suite("Mock Networking Tests")
+struct MockNetworkingTests {
+	
+}
+
 @Test("Test Basic Mock Response")
 func testBasicMockResponse() async throws {
 	guard let url = URL(string: "https://www.\(Int.random(in: 1...10000000)).com"),

@@ -248,4 +248,9 @@ struct MockNetworkingTests {
 		let header = receivedHTTPResponse.allHeaderFields["thing180"] as? String
 		#expect(header == "thing2")
 	}
+
+	@Test("Test Response Equality Functions")
+	func testResponseEquality() async throws {
+		
+	}
 }

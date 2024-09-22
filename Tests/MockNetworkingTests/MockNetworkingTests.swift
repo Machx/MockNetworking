@@ -196,8 +196,11 @@ func testErrorResponse() async throws {
 	#expect(receivedError?.domain == error.domain)
 }
 
-func testBodyData() throws {
-	let url = try XCTUnwrap(URL(string: "https://www.\(Int.random(in: 1...10000000)).com"))
+@Test("Test Body Data")
+func testBodyData() async throws {
+	guard let url = URL(string: "https://www.\(Int.random(in: 1...10000000)).com") else {
+		throw MockNetworkingTestError.couldNotUnwrapPreparedResponse
+	}
 
 	let originalString = "Hello World"
 	let originalData = originalString.data(using: .utf8)
@@ -210,18 +213,9 @@ func testBodyData() throws {
 	MockURLProtocol.registerMock(response: mockResponse, for: url)
 	defer { MockURLProtocol.unregister() }
 
-	let expectation = XCTestExpectation()
 	let request = URLRequest(url: url)
-	var receivedData: Data?
-	URLSession.sessionWith(.ephemeral).dataTask(with: request) { (data, _, _) in
-		receivedData = data
-		expectation.fulfill()
-	}.resume()
-
-	wait(for: [expectation], timeout: 2.0)
-
-	let data = try XCTUnwrap(receivedData)
-	XCTAssertEqual(data, originalData)
+	let (data, _) = try await URLSession.sessionWith(.ephemeral).data(for: request)
+	#expect(data == originalData)
 }
 
 final class MockNetworkingTests: XCTestCase {

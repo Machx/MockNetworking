@@ -18,6 +18,7 @@ import Testing
 
 enum MockNetworkingTestError: Error {
 	case couldNotUnwrapPreparedResponse
+	case couldNotUnwrapVariable
 }
 
 @Test("Test Basic Mock Response")
@@ -218,39 +219,32 @@ func testBodyData() async throws {
 	#expect(data == originalData)
 }
 
-func testHTTPResponse() throws {
-	let url = try XCTUnwrap(URL(string: "https://www.\(Int.random(in: 1...10000000)).com"))
-	let response = try XCTUnwrap(HTTPURLResponse(url: url,
-								   statusCode: 200,
-								   httpVersion: HTTPURLResponse.HTTP_1_1,
-								   headerFields: ["thing180":"thing2"]))
+@Test("Test HTTP Response")
+func testHTTPResponse() async throws {
+	guard let url = URL(string: "https://www.\(Int.random(in: 1...10000000)).com"),
+		  let response = HTTPURLResponse(url: url,
+										 statusCode: 200,
+										 httpVersion: HTTPURLResponse.HTTP_1_1,
+										 headerFields: ["thing180":"thing2"]) else {
+		throw MockNetworkingTestError.couldNotUnwrapVariable
+	}
 
 	MockURLProtocol.register(response: response, for: url)
 	defer { MockURLProtocol.unregister() }
 
-	var receivedResponse: URLResponse?
-	let expectation = XCTestExpectation()
-	URLSession.sessionWith(.ephemeral).downloadTask(with: url) { (url, response, error) in
-		receivedResponse = response
-		expectation.fulfill()
-	}.resume()
-
-	wait(for: [expectation], timeout: 5.0)
-
-	XCTAssertNotNil(receivedResponse)
+	let (_, receivedResponse) = try await URLSession.sessionWith(.ephemeral).data(from: url)
 	guard let receivedHTTPResponse = receivedResponse as? HTTPURLResponse else {
-		XCTFail("Could not convert Response to HTTPURLResponse type")
-		return
+		throw MockNetworkingTestError.couldNotUnwrapVariable
 	}
 	// We can't compare the HTTPURLResponse we get back directly with an
 	// XCTAssertEqual(response,otherResponse) because it considers the text/mime type
 	// in equality, which ours will be nil and the received will be "text/plain"
-	XCTAssertEqual(response.url, receivedHTTPResponse.url)
-	XCTAssertEqual(response.statusCode, receivedHTTPResponse.statusCode)
-	XCTAssertEqual(response.allStringHTTPHeaders(), receivedHTTPResponse.allStringHTTPHeaders())
+	#expect(response.url == receivedHTTPResponse.url)
+	#expect(response.statusCode == receivedHTTPResponse.statusCode)
+	#expect(response.allStringHTTPHeaders() == receivedHTTPResponse.allStringHTTPHeaders())
 
-	let header = try XCTUnwrap(receivedHTTPResponse.allHeaderFields["thing180"] as? String)
-	XCTAssertEqual(header, "thing2")
+	let header = receivedHTTPResponse.allHeaderFields["thing180"] as? String
+	#expect(header == "thing2")
 }
 
 final class MockNetworkingTests: XCTestCase {

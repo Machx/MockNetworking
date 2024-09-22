@@ -54,7 +54,7 @@ struct MockNetworkingTests {
 	@Test("Test Basic Mock Response with Mock Type")
 	func testBasicMockResponseWithMockType() async throws {
 		guard let url = URL(string: "https://www.\(Int.random(in: 1...10000000)).com") else {
-			throw MockNetworkingTestError.couldNotUnwrapPreparedResponse
+			throw MockNetworkingTestError.couldNotUnwrapVariable
 		}
 		let mockResponse = MockPropertyResponse(url: url,
 												status: 200,
@@ -174,7 +174,7 @@ struct MockNetworkingTests {
 	@Test("Test Error Response")
 	func testErrorResponse() async throws {
 		guard let url = URL(string: "https://www.\(Int.random(in: 1...10000000)).com") else {
-			throw MockNetworkingTestError.couldNotUnwrapPreparedResponse
+			throw MockNetworkingTestError.couldNotUnwrapVariable
 		}
 		let error = NSError(domain: "com.MockNetworking.UnitTests",
 							code: 200,

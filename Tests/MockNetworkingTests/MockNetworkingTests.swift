@@ -264,14 +264,25 @@ struct MockNetworkingTests {
 		let urlResponse = httpResponse as URLResponse
 		#expect(httpResponse.isBasicallyEqual(to: urlResponse))
 
-		guard let httpResponse2 = HTTPURLResponse(url: url,
-												  statusCode: 200,
-												  httpVersion: "HTTP/1.1",
-												  headerFields: [
-													"Test" : "test"
-												  ]) else {
+		guard let anotherEqualHTTPResponse = HTTPURLResponse(url: url,
+															 statusCode: 200,
+															 httpVersion: "HTTP/1.1",
+															 headerFields: [
+																"Test" : "test"
+															 ]) else {
 			throw MockNetworkingTestError.couldNotUnwrapVariable
 		}
-		#expect(httpResponse2.isBasicallyEqual(to: httpResponse))
+		#expect(anotherEqualHTTPResponse.isBasicallyEqual(to: httpResponse))
+
+		guard let anUnqualResponse = HTTPURLResponse(url: url,
+													 statusCode: 201,
+													 httpVersion: "HTTP/1.2",
+													 headerFields: [
+														"Test" : "test222222"
+													 ]) else {
+			throw MockNetworkingTestError.couldNotUnwrapVariable
+		}
+
+		#expect(anUnqualResponse.isBasicallyEqual(to: httpResponse) == false)
 	}
 }

@@ -286,6 +286,16 @@ struct MockNetworkingTests {
 		#expect(anUnqualResponse.isBasicallyEqual(to: httpResponse) == false)
 	}
 
+	@Test("Test Header Response getter")
+	func testResponseHeaderGetter() async throws {
+		let mockResponse = MockPropertyResponse(url: URL(string: "https://www.apple.com")!,
+												status: 200,
+												headerFields: [:])
+
+		let expectedHeaders = [String:String]()
+		#expect(mockResponse.headers == expectedHeaders)
+	}
+
 	@Test("Test Session with Convenience API and nil parameter")
 	func testSessionWithNil() async throws {
 		let session = URLSession.sessionWith(nil)

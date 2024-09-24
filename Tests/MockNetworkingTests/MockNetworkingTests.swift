@@ -13,7 +13,7 @@
 /// limitations under the License.
 
 import Foundation
-import MockNetworking
+@testable import MockNetworking
 import Testing
 
 enum MockNetworkingTestError: Error {

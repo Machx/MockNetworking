@@ -285,4 +285,10 @@ struct MockNetworkingTests {
 
 		#expect(anUnqualResponse.isBasicallyEqual(to: httpResponse) == false)
 	}
+
+	@Test("Test Session with Convenience API and nil parameter")
+	func testSessionWithNil() async throws {
+		let session = URLSession.sessionWith(nil)
+		#expect(session != nil)
+	}
 }

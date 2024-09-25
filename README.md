@@ -25,6 +25,18 @@ defer {
 This uses `HTTPURLResponse`, there is also a custom api available.
 
 ```swift
+// Swift Test
+guard let URL(string: "https://wwww.apple.com"),
+        let mockResponse = MockPropertyResponse(url: url,
+							status: 200,
+							headerFields: [:]) else { throw .couldNotCreateMockResponse }
+
+MockURLProtocol.registerMock(response: mockResponse, for: url)
+defer {
+	MockURLProtocol.unregister()
+}
+
+// XCTest
 let url = try XCTUnwrap(URL(string: "https://wwww.apple.com"))
 let mockResponse = MockPropertyResponse(url: url,
 					status: 200,

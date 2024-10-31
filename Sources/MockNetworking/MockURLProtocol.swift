@@ -34,7 +34,7 @@ public final class MockURLProtocol: URLProtocol {
 		case cannotConstructResponse
 	}
 	
-	public static let shared = MockURLProtocol()
+	nonisolated(unsafe) public static let shared = MockURLProtocol()
 	
 	//MARK: - Required URLProtocol API's
 	
@@ -101,7 +101,7 @@ public final class MockURLProtocol: URLProtocol {
 	
 	//MARK: - Registration API's
 	
-	private static var _isRegistered = false
+	nonisolated(unsafe) private static var _isRegistered = false
 	
 	/// Registers MockURLProtocol and sets the values that should be responded to the given URL.
 	/// - Parameters:
